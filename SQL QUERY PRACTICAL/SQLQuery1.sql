@@ -70,3 +70,38 @@ set Grade-=10
 where Grade in (select Grade
 		from Stud_Course sc , Student s 
 		where s.St_Id=sc.St_Id and s.St_Address='Alex')
+
+
+
+---- AGGREGATE fUNCTION
+select SUM(St_Id) , d.Dept_Name
+from Student s inner join Department d
+On s.Dept_Id =d.Dept_Id
+where d.Dept_Name in ('EL','java')
+group by Dept_Name
+Having Count(Dept_Location) >=3
+
+
+--sub query
+select Dept_Name
+from Department
+where Dept_Id in (select Dept_Id from Student where Dept_Id is not NULL)
+
+
+select Dept_Name,(select Count(St_Id) from Student where Student.Dept_Id=Department.Dept_Id)
+from Department
+
+
+--- Union Family 
+(
+select St_Fname
+from Student
+union all 
+select ('-------------Instructor---------')
+)
+union all
+select Ins_Name
+from Instructor
+
+
+	
