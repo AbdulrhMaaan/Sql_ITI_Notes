@@ -573,3 +573,140 @@ sp_addtype arafa_DT,int
 sp_bindrule rule_new_datatype , arafa_DT
 
 sp_bindefault default_new_datatype , arafa_DT
+
+
+
+Session 7 
+
+declare @x int 
+
+select @x = 50 
+set @x = 20 
+select @x
+
+declare @x int 
+select St_Address , @x=Dept_Id
+from Student
+where St_Lname='Hassan'
+
+declare @y int  = 100
+select @y
+
+
+declare @x int 
+update Student  set St_Lname='Hasssan' , @x=Dept_Id
+where St_Lname='Hassan'
+
+select @x 
+
+select @@ROWCOUNT
+select @@SERVERNAME
+select @@VERSION
+select @@ERROR
+insert into Student(St_Fname,St_Lname,Dept_Id) values ('fsdf','sdfsd',20)
+select @@IDENTITY
+
+declare @x table(age int , addre varchar(20) )  
+insert into  @x
+select St_Age , St_Address from Student
+select * from @x
+
+
+
+if (select St_Age from Student where St_Id=1 ) >0 
+select 'Yes'
+else 
+select 'No'
+
+select 'select * from Student'
+execute ('select * from Student')
+
+
+begin try 
+	begin transaction 
+		insert into Student(Dept_Id) values(10)
+		insert into Student(Dept_Id) values(500)
+		insert into Student(Dept_Id) values(30)
+				commit
+end try 
+
+begin catch 
+	select 'Error ya 3rafa'
+	rollback
+end catch 
+
+
+use ITI
+
+--- select the Highest Name of Length 
+select top(1) * 
+from
+(select len(St_Fname) as m, St_Fname
+from Student
+) as n
+order by LEN(St_Fname) desc 
+
+
+
+--- another sol
+select top(1) st_fname
+from student 
+order by LEN(St_Fname) desc
+
+
+--scalar Functio return One Value Only
+create function get_names_of_student (@id int)
+returns varchar(20)
+begin 
+	declare @name varchar(20)
+	select @name=st_fname from student where St_Id = @id
+	return @name
+end
+
+-- Must Assing Schema
+select dbo.get_names_of_student(1)
+
+
+
+---inline Function   -return table   but body have only Select without if or while ....    
+
+create Function get_info_of_department(@id int)
+returns table 
+as 
+return 
+(
+select ins_name , Salary *12 as salary
+from Instructor
+where Dept_Id =@id
+)
+go
+select * from dbo.get_info_of_department(10)
+
+
+
+--- multi  --- return table  use if body has if or while or case  or any logical function
+--- return id, name of student based on user need
+create function get_name_and_id_of_student (@format varchar(20))
+returns @t  table 
+			(
+			id int , namee varchar(20)
+			)
+as
+begin
+		if @format ='first'
+		 insert into @t 
+		 select St_Id ,St_Fname from Student
+		else if @format ='second'
+		 insert into @t 
+		 select St_Id ,St_lname from Student
+		else if @format ='full'
+		 insert into @t 
+		 select St_Id ,St_Fname+''+St_lname from Student
+
+		return 
+end
+
+select * from dbo.get_name_and_id_of_student('')
+select * from dbo.get_name_and_id_of_student('full')
+
+
