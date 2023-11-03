@@ -710,3 +710,17 @@ select * from dbo.get_name_and_id_of_student('')
 select * from dbo.get_name_and_id_of_student('full')
 
 
+alter view vstudent_incairo(f,a) 
+with encryption
+as
+select St_Fname,St_Address
+from Student
+where St_Address='cairo'
+
+insert into vstudent_incairo
+values ('ahmed',alex)
+
+select * from vstudent_incairo
+sp_helptext 'vstudent_incairo'
+
+use iti
