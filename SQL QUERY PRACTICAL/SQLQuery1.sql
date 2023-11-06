@@ -724,3 +724,62 @@ select * from vstudent_incairo
 sp_helptext 'vstudent_incairo'
 
 use iti
+--------- procedure
+create proc getdata_student  @age int output , @name varchar(20) output
+with encryption 
+as 
+select @age=St_Age , @name=St_Fname
+from Student
+where St_Id=@age
+
+declare @x int=5 , @y varchar(20)
+execute getdata_student @x output ,@y output
+select @x , @y
+
+
+
+
+alter proc Nreturngetstudent    
+as 
+declare @age int
+select @age=St_Age 
+from Student
+where St_Id=5
+	return @age
+
+declare @y int 
+Set @y = execute Nreturngetstudent 
+select @y
+
+
+
+--------
+create trigger t1 
+on student 
+after insert 
+As 
+select 'welcome to itit'
+
+
+insert into Student(st_id,St_fname) values (24,'kk')
+
+use iti
+create trigger t2 
+on Student 
+instead of  update 
+As 
+ select 'Not allowed'
+
+
+ update Student
+ set Dept_Id=100
+ where St_Id=1000000000
+
+
+
+ --------- output
+delete from Student
+output suser_name() , deleted.st_fname
+where St_Id=1101
+
+
