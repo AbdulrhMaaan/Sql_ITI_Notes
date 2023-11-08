@@ -917,3 +917,14 @@ deallocate c1
 
 
 
+--- identity
+
+insert into table_1(id,name)
+values (2,'monaa')
+
+
+delete from table_1
+where name='monaa'
+
+
+set identity_insert table_1 ON 
